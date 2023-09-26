@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resolución Parametrizable</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Resolución Parametrizable</h1>
+        <form action="" method="POST">
+
+            <div class="form-group">
+                <label for="combustible">Combustible (mm³ por minuto):</label>
+                <input type="text" class="form-control" id="combustible" name="combustible" placeholder="Ej: 0.005, 0.015, 0.02, 0.025">
+            </div>
+            <div class="form-group">
+                <label for="rpm">Revoluciones por Minuto (RPM):</label>
+                <input type="text" class="form-control" id="rpm" name="rpm" placeholder="Ej: 1200, 3500, 4400, 5000">
+            </div>
+            <h2>Valores para ajustar la curva</h2>
+            <div class="form-group">
+                <label for="p0">p0:</label>
+                <input type="text" class="form-control" id="p0" name="p0" placeholder="Ej: 8000, 0, 0.02">
+            </div>
+
+            <!-- Ingresar los valores para el punto b -->
+            <h2>Punto B</h2>
+            <div class="form-group">
+                <label for="combustible_b">Combustible para el punto B:</label>
+                <input type="text" class="form-control" id="combustible_b" name="combustible_b" placeholder="Ej: 0.02, 0.04, 0.1">
+            </div>
+            <!-- Botón para enviar el formulario -->
+            <button type="submit" class="btn btn-primary">Calcular</button>
+        </form>
+    </div>
+    {% if datos_incompletos %}
+    <div class="container mt-5">
+        <div class="alert alert-danger" role="alert">
+            <h4 class="alert-heading">Datos incompletos</h4>
+            <p>Por favor, ingrese todos los datos solicitados.</p>
+        </div>
+    </div>
+    {% endif %}
+    {% if renderizar %}
+     <div class="container mt-5">
+        <h2>Tabla de Valores:</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>RPM</th>
+                    <th>Combustible (mm³ por minuto)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in tupla_tabla %}
+                    <tr>
+                        <td>{{ i.0 }}</td>
+                        <td>{{ i.1 }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="container mt-5">
+        <h2>Resultado A:</h2>
+        <p>La cantidad máxima de revoluciones por minuto es: {{ resultado_a }}</p>
+        <p>Se produce aproximadamente a {{ combustible_aprox }} mm³ por minuto de combustible inyectado.</p>
+    </div>
+
+    <div class="container mt-5">
+        <h2>Resultado B:</h2>
+        <p>Revoluciones por minuto para otros valores de combustible inyectado:</p>
+        <ul>
+            {% for i in tupla_punto_b %}
+                <li>Para {{ i.0 }} mm³ por minuto: {{ i.1 }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="container mt-5">
+        <h2 class="mt-4">Resultado C:</h2>
+        {% load static %}
+        <img src= "{% static '/resolucion_param_plot.png' %}" alt="Gráfico de combustible vs. revoluciones" class="img-fluid">
+    </div>
+    {% endif %}
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
