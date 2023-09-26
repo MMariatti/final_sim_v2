@@ -30,6 +30,9 @@ def get_resolucion(request):
     # combustible inyectado aprox para L
     combustible_aprox = aproximar_combustible_euler(L, k, x0, L)
 
+    # metodo alternativo
+    # np.interp(L, rpm, combustible)
+
     # b. Revoluciones por minuto para otros valores de combustible inyectado
     combustible_valores_especificos = np.array([0.03, 0.05, 0.065, 0.1])
     combustible_predicciones = np.linspace(min(combustible), max(combustible), 100)
@@ -78,7 +81,6 @@ def resolucion_parametrizable(request):
 
         query_dict = request.POST
         data_dict = {key: value for key, value in query_dict.items()}
-        print(data_dict)
         if all(data_dict.values()):
 
             # Obtengo la lista numerica de combustible
@@ -105,7 +107,7 @@ def resolucion_parametrizable(request):
 
             combustible_aprox_max_rpm = aproximar_combustible_euler(L, k, x0, L)
             # metodo alternativo
-            print(np.interp(L, valores_rpm, valores_combustible))
+            # np.interp(L, valores_rpm, valores_combustible)
 
             # Calculo de los valores de rpm para los valores de combustible especificados en el punto b
             rpm_valores_especificos = funcion_logistica(valores_combustible_b, L, k, x0)
@@ -138,8 +140,7 @@ def resolucion_parametrizable(request):
             # Convertimos valores?rpm y valores?combustibles a una lista de tuplas
             tupla_tabla = list(zip(valores_rpm, valores_combustible))
             tupla_punto_b = list(zip(valores_combustible_b, rpm_valores_especificos_formateados))
-            print(tupla_tabla)
-            print(tupla_punto_b)
+
             context = {'renderizar': True,
                        'datos_incompletos': False,
                        'tupla_tabla': tupla_tabla,
