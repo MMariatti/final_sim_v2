@@ -66,7 +66,6 @@ def get_resolucion(request):
                 'resultado_b_05': format(rpm_valores_especificos[1], '.4f'),
                 'resultado_b_065': format(rpm_valores_especificos[2], '.4f'),
                 'resultado_b_1': format(rpm_valores_especificos[3], '.4f'),
-                'grafico': 'resolucion_plot.png',
                 }
 
     return render(request, 'resolucion.html', context=contexto)
@@ -83,12 +82,16 @@ def resolucion_parametrizable(request):
         data_dict = {key: value for key, value in query_dict.items()}
         if all(data_dict.values()):
 
-            # Obtengo la lista numerica de combustible
             lista_combustible = data_dict['combustible'].split(',')
+            lista_rpm = data_dict['rpm'].split(',')
+            if len(lista_combustible) != len(lista_rpm):
+                context = {'renderizar': False, 'datos_incompletos': True}
+                return render(request, 'resolucion_parametrizable.html', context=context)
+
+            # Obtengo la lista numerica de combustible
             valores_combustible = [float(i) for i in lista_combustible]
 
             # Obtengo la lista numerica de rpm
-            lista_rpm = data_dict['rpm'].split(',')
             valores_rpm = [int(i) for i in lista_rpm]
 
             # Obtengo la lista numerica de p0
