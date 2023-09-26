@@ -104,6 +104,8 @@ def resolucion_parametrizable(request):
             L, k, x0 = params
 
             combustible_aprox_max_rpm = aproximar_combustible_euler(L, k, x0, L)
+            # metodo alternativo
+            print(np.interp(L, valores_rpm, valores_combustible))
 
             # Calculo de los valores de rpm para los valores de combustible especificados en el punto b
             rpm_valores_especificos = funcion_logistica(valores_combustible_b, L, k, x0)
