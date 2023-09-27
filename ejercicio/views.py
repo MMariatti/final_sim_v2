@@ -1,10 +1,10 @@
 import matplotlib.pyplot as plt
 import numpy as np
-import json
+
 from scipy.optimize import curve_fit
-from django.http import HttpResponse
+
 from django.shortcuts import render
-from .utils import funcion_logistica, funcion_logistica_inversa, aproximar_combustible_euler
+from .utils import funcion_logistica, aproximar_combustible_euler
 
 
 def get_ejercicio(request):
