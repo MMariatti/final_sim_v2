@@ -18,7 +18,7 @@ def get_resolucion(request):
     rpm = [1200, 3500, 4400, 5000]
 
     # Ajuste de la curva logística
-    params, _ = curve_fit(funcion_logistica, combustible, rpm, p0=[8000, 0, np.mean(combustible)])
+    params, _ = curve_fit(funcion_logistica, combustible, rpm, p0=[8000, 0, np.mean(combustible)], maxfev=10000)
 
     # Parámetros del ajuste
     L, k, x0 = params
@@ -103,7 +103,7 @@ def resolucion_parametrizable(request):
             valores_combustible_b = [float(i) for i in lista_combustible_b]
 
             # Ajuste de la curva logística
-            params, _ = curve_fit(funcion_logistica, valores_combustible, valores_rpm, p0=valores_p0)
+            params, _ = curve_fit(funcion_logistica, valores_combustible, valores_rpm, p0=valores_p0, maxfev=10000)
 
             # Parámetros del ajuste
             L, k, x0 = params
@@ -118,7 +118,11 @@ def resolucion_parametrizable(request):
             # formateo valores_especificos a 4 decimales
             rpm_valores_especificos_formateados = [format(i, '.4f') for i in rpm_valores_especificos]
 
-            combustible_grafica = np.linspace(0, 0.2, 100)  # Valores de combustible para la
+            # Junto los 2 arrays de combustibles para graficar
+            maximo_grafica = max(valores_combustible + valores_combustible_b)
+            print(maximo_grafica)
+
+            combustible_grafica = np.linspace(0, maximo_grafica, 100)  # Valores de combustible para la
             # gráfica
             rpm_grafica = funcion_logistica(combustible_grafica, L, k, x0)
 
